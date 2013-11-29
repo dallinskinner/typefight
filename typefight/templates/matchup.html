@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load voter %}
+
+{% block body %}
+<div class="container">
+
+
+    {% for matchup in matchups %}
+
+    {% if not matchup.id in votes %}
+    <div class="row">
+        <div class="col-md-12 voting-booth">
+            <form action='/vote/' method="post">
+            {% csrf_token %}
+            <input type="hidden" value="{{matchup.id}}" name="matchup" />
+
+
+            <div class="row">
+                <div class="col-md-offset-1 col-md-5">
+                    <input id="{{matchup.id}}letter-a" class="hidden" type="radio" name="letter" value="{{matchup.letter_a.id}}" />
+                    <label for="{{matchup.id}}letter-a" class="clickable">
+                        <img class="img-responsive matchup-image" src="{{matchup.letter_a.image.url}}" />
+                    </label>
+                    <label for="{{matchup.id}}letter-a" class="checkmark clickable"></label>
+                </div>
+
+                <div class="col-md-5">
+                    <input id="{{matchup.id}}letter-b" type="radio" class="hidden" name="letter" value="{{matchup.letter_b.id}}" />
+                    <label for="{{matchup.id}}letter-b" class="clickable">
+                        <img class="img-responsive matchup-image" src="{{matchup.letter_b.image.url}}" />
+                    </label>
+                    <label for="{{matchup.id}}letter-b" class="checkmark clickable"></label>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <input class="btn" type="submit" value="Submit" />
+                </div>
+            </div>
+
+            </form>
+        </div>
+        
+    </div>
+
+    {% endif %}
+
+    {% endfor %}
+
+    {% if matchups|length == votes|length %}
+
+    <div class="row">
+
+        <div class="col-md-offset-4 col-md-4">
+
+            <h3>There are no more matchups to vote on</h3>
+            <a href="/results/">View Results</a>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+</div>
+{% endblock %}

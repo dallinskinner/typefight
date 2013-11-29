@@ -1,0 +1,59 @@
+body {
+	background-image: url('../img/dust.png');
+}
+
+.clickable {
+	cursor: pointer;
+}
+
+.checkmark {
+	height: 100px;
+	background-image: url('../img/checkmark.png');
+	background-position: bottom;
+	background-repeat: no-repeat;
+	display: block;
+}
+
+input[type="radio"]:checked~.checkmark {
+	background-position: top;
+}
+
+.results-bar {
+	margin: 25px 15px;
+	height: 50px;
+	border-radius: 3px;
+	padding: 5px;
+	box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, .4);
+}
+
+.results-bar p {
+	font-size: 24px;
+	font-family: Georgia;
+	border: 2px solid #fff;
+	border-radius: 20px;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 35px;
+	float: right;
+}
+
+.matchup-result {
+	padding-bottom: 15px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	padding-top: 15px;
+	background-color: #fff;
+	box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, .2);
+	border-radius: 3px;
+}
+
+.matchup-image {
+	box-shadow: 2px 2px 6px 2px rgba(0, 0, 0, .2);
+}
+
+.voting-booth {
+	margin-top: 25px;
+	margin-bottom: 15px;
+}
