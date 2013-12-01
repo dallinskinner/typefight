@@ -37,6 +37,18 @@ class MatchUp(models.Model):
     		}
     	}
 
+    def get_loser(self):
+
+        a_votes = self.vote_set.filter(letter=self.letter_a).count()
+        b_votes = self.vote_set.filter(letter=self.letter_b).count()
+
+        if a_votes > b_votes:
+            return self.letter_b
+        elif a_votes < b_votes:
+            return self.letter_a
+        else:
+            return None
+
     def __unicode__(self):
         return "{} ___VS___ {}".format(self.letter_a, self.letter_b)
 
@@ -45,4 +57,3 @@ class Vote(models.Model):
 
     letter = models.ForeignKey('Letter')
     matchup = models.ForeignKey('MatchUp')
-    session_id = models.CharField(max_length=255)

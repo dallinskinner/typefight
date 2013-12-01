@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^letters/$', 'voter.views.get_letters', name='letters'),
     url(r'^matchup/create/$', 'voter.views.create_matchup', name='create-matchup'),
     url(r'^results/$', 'voter.views.results', name='results'),
+    url(r'^console/$', 'voter.views.admin_console', name='admin_console'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),

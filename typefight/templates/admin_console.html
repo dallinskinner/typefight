@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block body %}
+<div class="container">
+	<div class="row">
+		<label class="col-md-12">Current Matchups: {{matchup_count}}</label>
+	</div>
+	<div class="row">
+
+		<div class="col-md-6">
+			<form action="{% url 'admin_console' %}" method="post">
+				{% csrf_token %}
+				<input type="hidden" name="action" value="create_matchups" />
+				<input type="submit" class="btn" value="Generate Matchups" />
+			</form>
+		</div>
+
+		<div class="col-md-6">
+			<form action="{% url 'admin_console' %}" method="post">
+				{% csrf_token %}
+				<input type="hidden" name="action" value="purge_losers" />
+				<input type="submit" class="btn" value="Purge Losers" />
+			</form>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6">
+			<ul class="list-unstyled">
+				{% for matchup in matchups %}
+				<li>
+					<img width="100px" src="{{matchup.letter_a.image.url}}" /> vs <img width="100px" src="{{matchup.letter_b.image.url}}" />
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+		<div class="col-md-6">
+			<ul class="list-unstyled">
+				{% for letter in letters %}
+				<li>
+					<img width="100px" src="{{letter.image.url}}" />
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>
+{% endblock %}
