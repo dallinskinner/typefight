@@ -1,4 +1,13 @@
 {% extends "base.html" %}
+{% load staticfiles %}
+
+{% block head %}
+<style type="text/css">
+	body {
+		background-image: url('{% static "img/dust.png" %}');
+	}
+</style>
+{% endblock %}
 
 {% block body %}
 
@@ -11,9 +20,18 @@
 			<img width="100px" src="{{matchup.letter_a.image.url}}" />
 		</div>
 		<div class="col-md-11">
+
+			{% if matchup.get_results.a.votes > 0 %}
+
 			<div class="results-bar" style="background-color: {{matchup.letter_a.dominant_color}}; width: {{matchup.get_results.a.percent}}%">
-				<p>{{matchup.get_results.a.votes}}</p>
+				<p class="vote-count">{{matchup.get_results.a.votes}}</p>
 			</div>
+
+			{% else %}
+			<div class="empty-bar">
+				<p class="vote-count">{{matchup.get_results.a.votes}}</p>
+			</div>
+			{% endif %}
 		</div>
 	</div>
 
@@ -23,9 +41,18 @@
 			<img width="100px" src="{{matchup.letter_b.image.url}}" />
 		</div>
 		<div class="col-md-11">
+
+			{% if matchup.get_results.b.votes > 0 %}
+
 			<div class="results-bar" style="background-color: {{matchup.letter_b.dominant_color}}; width: {{matchup.get_results.b.percent}}%">
-				<p>{{matchup.get_results.b.votes}}</p>
+				<p class="vote-count">{{matchup.get_results.b.votes}}</p>
 			</div>
+
+			{% else %}
+			<div class="empty-bar">
+				<p class="vote-count">{{matchup.get_results.b.votes}}</p>
+			</div>
+			{% endif %}
 		</div>
 	</div>
 

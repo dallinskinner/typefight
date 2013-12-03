@@ -20,7 +20,7 @@
 			<form action="{% url 'admin_console' %}" method="post">
 				{% csrf_token %}
 				<input type="hidden" name="action" value="purge_losers" />
-				<input type="submit" class="btn" value="Purge Losers" />
+				<input type="submit" class="btn" value="Eliminate Losers" />
 			</form>
 		</div>
 	</div>
@@ -36,6 +36,7 @@
 			</ul>
 		</div>
 		<div class="col-md-6">
+			<h5>Winners</h5>
 			<ul class="list-unstyled">
 				{% for letter in letters %}
 				<li>
@@ -43,6 +44,25 @@
 				</li>
 				{% endfor %}
 			</ul>
+
+			<h5>Eliminated</h5>
+			<ul class="list-unstyled">
+				{% for letter in archived %}
+				<li>
+					<img width="100px" src="{{letter.image.url}}" />
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6">
+			<form action="{% url 'admin_console' %}" method="post">
+				{% csrf_token %}
+				<input type="hidden" name="action" value="clear_results" />
+				<input type="submit" class="btn" value="Clear Results" />
+			</form>
 		</div>
 	</div>
 </div>

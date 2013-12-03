@@ -1,5 +1,6 @@
 body {
-	background-image: url('../img/dust.png');
+	/*background-image: url('../img/dust.png');*/
+	background-color: #eee;
 }
 
 .clickable {
@@ -26,10 +27,18 @@ input[type="radio"]:checked~.checkmark {
 	box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, .4);
 }
 
-.results-bar p {
+.empty-bar {
+	margin: 25px 15px;
+	height: 50px;
+	border-radius: 3px;
+	padding: 5px;
+	width: 4%;
+}
+
+.vote-count {
 	font-size: 24px;
 	font-family: Georgia;
-	border: 2px solid #fff;
+	border: 2px solid #000;
 	border-radius: 20px;
 	width: 40px;
 	height: 40px;

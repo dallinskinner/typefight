@@ -7,6 +7,7 @@ class Letter(models.Model):
 
     letter = models.CharField(max_length=1, choices=LETTERS)
     image = models.ImageField(upload_to='media/uploads')
+    archived = models.BooleanField(default=False)
 
     def dominant_color(self):
     	return colorz(self.image, 1)[0]
@@ -26,13 +27,30 @@ class MatchUp(models.Model):
     	a_votes = self.vote_set.filter(letter=self.letter_a).count()
     	b_votes = self.vote_set.filter(letter=self.letter_b).count()
 
+        try:
+            a_percent = (float(a_votes) / float((a_votes + b_votes)))*100
+
+            if a_percent > 98:
+                a_percent = 98
+
+        except:
+            a_percent = 0
+
+        try:
+            b_percent = (float(b_votes) / float((b_votes + a_votes)))*100
+
+            if b_percent > 98:
+                b_percent = 98
+        except:
+            b_percent = 0
+
     	return {
     		'a': {
-    			'percent': (float(a_votes) / float((a_votes + b_votes)))*100,
+    			'percent': a_percent,
     			'votes': a_votes
     		},
     		'b': {
-    			'percent': (float(b_votes) / float((b_votes + a_votes)))*100,
+    			'percent': b_percent,
     			'votes': b_votes
     		}
     	}

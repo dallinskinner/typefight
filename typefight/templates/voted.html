@@ -7,10 +7,10 @@
         <img class="img-responsive" src="{{voted.letter.image.url}}" />
         <div class="row">
         	<div class="col-md-6">
-        		<a href="/">Back to Matchups</a>
+        		<a href="{% url 'matchup' %}">Back to Matchups</a>
         	</div>
         	<div class="col-md-6">
-        		<a style="float: right" href="/results">View Current Results</a>
+        		<a style="float: right" href="{% url 'results' %}">View Current Results</a>
         	</div>
         </div>
     </div>

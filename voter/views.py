@@ -5,7 +5,22 @@ from voter.models import MatchUp, Letter
 from voter.forms import VoteForm, MatchUpForm
 from voter.constants import LETTERS
 
+from django.contrib.sessions.models import Session
+
 from django.contrib.auth.decorators import login_required
+
+
+def get_matchup(votes):
+
+    matchups = MatchUp.objects.all().order_by('?')
+
+    for matchup in matchups:
+
+        if matchup.id not in votes:
+
+            return matchup
+
+    return None
 
 
 def match_up(r):
@@ -17,13 +32,10 @@ def match_up(r):
 
     print votes
 
-    votes = []
+    matchup = get_matchup(votes)
 
-    matchups = MatchUp.objects.all()
+    return render(r, 'matchup.html', {'matchup': matchup})
 
-    # vote_form = VoteForm(initial={'matchup': matchup})
-
-    return render(r, 'matchup.html', locals())
 
 
 def cast_vote(r):
@@ -46,10 +58,10 @@ def cast_vote(r):
                 r.session['votes'] = [voted.matchup.id,]
 
 
-            return render(r, 'voted.html', locals())
+    matchup = get_matchup(r.session['votes'])
 
-        else:
-            return render(r, 'matchup.html', locals())
+
+    return render(r, 'matchup.html', locals())
 
 
 def create_matchup(r):
@@ -96,8 +108,13 @@ def admin_console(r):
 
             purge_losers()
 
+        elif r.POST['action'] == 'clear_results':
 
-    letters = Letter.objects.order_by('letter')
+            clear_results()
+
+
+    letters = Letter.objects.filter(archived=False).order_by('letter')
+    archived = Letter.objects.filter(archived=True).order_by('letter')
     matchups = MatchUp.objects.all()
     matchup_count = matchups.count()
 
@@ -113,31 +130,48 @@ def purge_losers():
         loser = matchup.get_loser()
 
         try:
-            loser.delete()
+            loser.archived = True
+            loser.save()
+            matchup.delete()
+            
         except AttributeError as e:
             pass
+
+    Session.objects.all().delete()
 
 
 def create_matchups():
 
     for letter in LETTERS:
 
-        letter_objs = Letter.objects.filter(letter=letter[0]).order_by('?')
+        letter_objs = Letter.objects.filter(letter=letter[0], archived=False).order_by('?')
+
+        # get them random but then put them in a list so they don't keep shuffling 
+        letter_list = [letter_obj for letter_obj in letter_objs]
 
         i = 0
 
         while i < letter_objs.count():
 
-            letter_a = letter_objs[i]
+            letter_a = letter_list[i]
 
             i = i + 1
 
             try:
-                letter_b = letter_objs[i]
+                letter_b = letter_list[i]
                 MatchUp.objects.create(letter_a=letter_a, letter_b=letter_b)
 
-                i = i + 1
-
             except IndexError as e:
-                print 'Odd # of letters'
                 pass
+
+            i = i + 1
+
+
+def clear_results():
+
+    letters = Letter.objects.all()
+
+    for letter in letters:
+
+        letter.archived = False
+        letter.save()
